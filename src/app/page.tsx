@@ -1,103 +1,157 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+import IdentityConfirmation from '@/components/IdentityConfirmation';
+import LoveReasons from '@/components/LoveReasons';
+import NotHajra from '@/components/NotHajra';
+import BouquetSurprise from '@/components/BouquetSurprise';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [currentStep, setCurrentStep] = useState<'home' | 'identity' | 'reasons' | 'bouquet-section' | 'bouquet-surprise'>('home');
+  const [isHajra, setIsHajra] = useState<boolean | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleIdentityConfirm = () => {
+    setCurrentStep('reasons');
+  };
+
+  const handleNotHajra = () => {
+    setIsHajra(false);
+  };
+
+  const handleYesClick = () => {
+    setIsHajra(true);
+    setCurrentStep('identity');
+  };
+
+  const handleBouquetSectionComplete = () => {
+    setCurrentStep('bouquet-surprise');
+  };
+
+  const handleBouquetSurpriseComplete = () => {
+    // Could add a final completion step here if needed
+    console.log('Love letter completed!');
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-rose-100 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-20 left-20 text-rose-200/20 text-6xl">
+          🌸
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="absolute top-40 right-32 text-rose-200/20 text-4xl">
+          🌺
+        </div>
+        <div className="absolute bottom-32 left-32 text-rose-200/20 text-5xl">
+          🌷
+        </div>
+        <div className="absolute bottom-20 right-20 text-rose-200/20 text-6xl">
+          🌹
+        </div>
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 py-8">
+        <AnimatePresence mode="wait">
+          {currentStep === 'home' && (
+            <motion.div
+              key="home"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="max-w-4xl mx-auto text-center"
+            >
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.8, type: "spring" }}
+                className="mb-12"
+              >
+                <h1 className="text-5xl md:text-7xl font-great-vibes text-rose-700 mb-6">
+                  🌹
+                </h1>
+                <h2 className="text-4xl md:text-5xl font-playfair text-rose-600 mb-6">
+                  A Love Letter for My Hajra
+                </h2>
+                <p className="text-xl text-rose-500 font-playfair mb-8">
+                  My dearest, there is a special message waiting just for you
+                </p>
+              </motion.div>
+
+              {/* Rose Image */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5, duration: 0.8, type: "spring" }}
+                className="mb-12"
+              >
+                <div className="w-80 h-80 mx-auto relative rounded-3xl overflow-hidden shadow-2xl">
+                  <Image
+                    src="/assets/hajra/roses1.jpg"
+                    alt="Beautiful rose"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                </div>
+              </motion.div>
+
+              {/* Question */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1, duration: 0.8 }}
+                className="mb-12"
+              >
+                <h3 className="text-3xl md:text-4xl font-playfair text-rose-700 mb-8">
+                  Is this Hajra?
+                </h3>
+                
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <motion.button
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleYesClick}
+                    className="elegant-button"
+                  >
+                    Yes, that&apos;s me 💕
+                  </motion.button>
+                  
+                  <motion.button
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleNotHajra}
+                    className="elegant-button-secondary"
+                  >
+                    Nah, not Hajra
+                  </motion.button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+
+          {currentStep === 'identity' && (
+            <IdentityConfirmation onConfirmed={handleIdentityConfirm} />
+          )}
+
+          {currentStep === 'reasons' && (
+            <LoveReasons onComplete={handleBouquetSectionComplete} />
+          )}
+
+          {currentStep === 'bouquet-surprise' && (
+            <BouquetSurprise onComplete={handleBouquetSurpriseComplete} />
+          )}
+        </AnimatePresence>
+
+        {/* Not Hajra Message */}
+        <AnimatePresence>
+          {isHajra === false && (
+            <NotHajra />
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
